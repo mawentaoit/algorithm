@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
-
+#include "stdlib.h"
 using namespace std;
 
 /**
@@ -128,7 +128,7 @@ struct TreeNode{
 TreeNode* createBinaryTree(int tall, int min = 1, int max = 100) {
         if(tall <= 0) return nullptr;
         TreeNode* p = new TreeNode();
-        p->val = random(min, max);
+        p->val = rand()%(max-min) + min;
         p->left = createBinaryTree(tall-1, min, max);
         p->right = createBinaryTree(tall-1, min, max);
         return p;
@@ -146,12 +146,12 @@ void printInOrder(TreeNode* head, int height, string to, int len) {
     if(head == nullptr) return;
     printInOrder(head->right, height + 1, "v", len);
     string val = to + to_string(head->val) + to;
-    int lenM = val.size();
+    int lenM = val.length();
     int lenL = (len - lenM) / 2;
     int lenR = len - lenM - lenL;
     val = getSpace(lenL) + val + getSpace(lenR);
     cout << getSpace(height * len) << val << endl;
-    printInOrder(head->right, height+1, "^", len);
+    printInOrder(head->left, height+1, "^", len);
 }
 /**
  * 中序打印二叉树
