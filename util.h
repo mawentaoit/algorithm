@@ -6,6 +6,9 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <sstream>
+#include <cstring>
+#include <queue>
 #include "stdlib.h"
 using namespace std;
 
@@ -162,6 +165,29 @@ void printTree(TreeNode* head) {
     cout << endl;
 }
 
+/**
+ * 字符串分割函数
+ */
+std::queue<std::string> split(const std::string& str, const string& delim) {
+    queue<string> res;
+    if("" == str) return res;
+    //讲要切割的字符串从string类型转换为char* 类型
+    char *strs = new char[str.length() + 1];
 
+	strcpy(strs, str.c_str());   
+ 
+	char * d = new char[delim.length() + 1];  
+	strcpy(d, delim.c_str());  
+ 
+	char *p = strtok(strs, d);  
+	while(p) {  
+		string s = p; //分割得到的字符串转换为string类型  
+		res.push(s); //存入结果数组  
+		p = strtok(NULL, d);  
+	}
+    delete[] d;
+    delete[] strs;
+    return res;  
+}
 
 #endif
