@@ -9,6 +9,9 @@
 #include <sstream>
 #include <cstring>
 #include <queue>
+#include <list>
+#include <map>
+#include <set>
 #include "stdlib.h"
 using namespace std;
 
@@ -190,4 +193,71 @@ std::queue<std::string> split(const std::string& str, const string& delim) {
     return res;  
 }
 
+
+/**
+ * 图
+ */
+class GraphNode;
+//边
+class GraphEdge{
+public:
+    int weight;
+    GraphNode* from;
+    GraphNode* to;
+    GraphEdge(int weight, GraphNode* from, GraphNode* to) :
+    weight(weight), from(from), to(to) {};
+};
+//图结点
+class GraphNode {
+public:
+    int value;
+    int in; //入度
+    int out; //出度
+    list<GraphNode*>* next;
+    list<GraphEdge*>* edges;
+    GraphNode(int value) : value(value) , in(0), out(0) {
+        next = new list<GraphNode*>;
+        edges = new list<GraphEdge*>;
+    }
+};
+
+class Graph{
+public: 
+    map<int, GraphNode*>* nodes;
+    set<GraphEdge*>* edges;
+    Graph() {
+        nodes = new map<int, GraphNode*>;
+        edges = new set<GraphEdge*>;
+    }
+    void createGraph(vector<vector<int>>& matrix) {
+        for (int i = 0; i < matrix.size(); i++) {
+            int weight = matrix[i][0];
+            int from = matrix[i][1];
+            int to = matrix[i][2];
+            auto iter = nodes->find(from);
+            if(iter == nodes->end()) {
+                //说明没有指向它的
+                nodes->insert(make_pair(from, new GraphNode(from)));
+            }
+            iter = nodes->find(to);
+            if(iter == nodes->end()) {
+                nodes->insert(make_pair(to, new GraphNode(to)));
+            }
+            //下面肯定是有这个元素的
+            GraphNode* fromNode = nodes->find(from)->second;
+            GraphNode* toNode = nodes->find(to)->second;
+            GraphEdge* newEdge = new GraphEdge(weight, fromNode, toNode);
+            fromNode->next->push_back(toNode);
+            fromNode->out++;
+            toNode->in++;
+            fromNode->edges->push_back(newEdge);
+            edges->insert(newEdge);
+        }
+    }
+};
+
+/**
+ *图的广度优先搜索
+ */
+// void 
 #endif
