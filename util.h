@@ -225,10 +225,7 @@ class Graph{
 public: 
     map<int, GraphNode*>* nodes;
     set<GraphEdge*>* edges;
-    Graph() {
-        nodes = new map<int, GraphNode*>;
-        edges = new set<GraphEdge*>;
-    }
+    Graph() : nodes(), edges() {}
     void createGraph(vector<vector<int>>& matrix) {
         for (int i = 0; i < matrix.size(); i++) {
             int weight = matrix[i][0];
